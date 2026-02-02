@@ -78,13 +78,27 @@ export function Resume() {
         </div>
         
         <div className="w-full h-[600px] bg-gray-50">
-          <iframe
-            src={resumeDetails.downloadUrl}
+          <object
+            data={`${resumeDetails.downloadUrl}#toolbar=0&navpanes=0&scrollbar=0`}
+            type="application/pdf"
             width="100%"
             height="100%"
             className="border-0"
-            title="Resume Preview"
-          />
+          >
+            <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+              <File className="h-16 w-16 text-gray-400 mb-4" />
+              <p className="text-gray-600 mb-4">
+                Unable to display PDF preview in your browser.
+              </p>
+              <button
+                onClick={handleDownload}
+                className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <Download className="h-5 w-5" />
+                Download PDF Instead
+              </button>
+            </div>
+          </object>
         </div>
       </motion.div>
     </div>
