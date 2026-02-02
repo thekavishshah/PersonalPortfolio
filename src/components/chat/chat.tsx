@@ -111,7 +111,8 @@ const Chat = () => {
     onError: (error) => {
       setLoadingSubmit(false);
       console.error('Chat error:', error.message, error.cause);
-      
+      console.error('Full error object:', error);
+
       // Handle specific error types
       if (error.message?.includes('quota') || error.message?.includes('exceeded') || error.message?.includes('429')) {
         // Show a friendly notification for quota issues

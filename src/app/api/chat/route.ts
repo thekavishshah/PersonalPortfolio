@@ -58,26 +58,30 @@ export async function POST(req: Request) {
     };
 
     console.log('[CHAT-API] About to call streamText');
-    
-    const result = await streamText({
-      model: google('gemini-2.0-flash'),
+
+    const result = streamText({
+      model: google('gemini-2.5-flash'),
       messages,
       tools,
       maxSteps: 2,
+      onFinish: async ({ text, finishReason, usage }) => {
+        console.log('[CHAT-API] Stream finished:', { finishReason, usage, textLength: text.length });
+      },
     });
 
-    console.log('[CHAT-API] streamText completed successfully');
-    console.log('[CHAT-API] Result object keys:', Object.keys(result));
-    
+    console.log('[CHAT-API] streamText created');
+
     const response = result.toDataStreamResponse();
     console.log('[CHAT-API] DataStreamResponse created');
-    
+
     return response;
   } catch (error) {
     console.error('Chat API error:', error);
     console.error('Error details:', error instanceof Error ? error.message : 'Unknown error');
     console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
-    
+    console.error('Error type:', typeof error);
+    console.error('Error constructor:', error?.constructor?.name);
+
     // Handle specific error types
     if (error instanceof Error && error.message?.includes('quota')) {
       return new Response('API quota exceeded. Please try again later.', { status: 429 });
