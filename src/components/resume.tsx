@@ -4,15 +4,50 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDownToLine, Download, Eye, File, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { resumeDetails } from '@/lib/config-loader';
 
+// Dynamically import PDF components (client-side only)
+const Document = dynamic(
+  () => import('react-pdf').then((mod) => mod.Document),
+  { ssr: false }
+);
+const Page = dynamic(
+  () => import('react-pdf').then((mod) => mod.Page),
+  { ssr: false }
+);
+
+// Configure PDF.js worker (client-side only)
+if (typeof window !== 'undefined') {
+  import('react-pdf/dist/Page/AnnotationLayer.css');
+  import('react-pdf/dist/Page/TextLayer.css');
+  import('react-pdf').then((pdfjs) => {
+    pdfjs.pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.pdfjs.version}/build/pdf.worker.min.mjs`;
+  });
+}
+
 export function Resume() {
-  // Resume details loaded from configuration
+  const [numPages, setNumPages] = useState<number>(0);
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [hasError, setHasError] = useState<boolean>(false);
 
   const handleDownload = () => {
     // For external URLs, open in a new tab
     window.open(resumeDetails.downloadUrl, '_blank');
   };
+
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
+    setNumPages(numPages);
+    setIsLoading(false);
+    setHasError(false);
+  }
+
+  function onDocumentLoadError(error: Error): void {
+    console.error('Error loading PDF:', error);
+    setIsLoading(false);
+    setHasError(true);
+  }
 
   return (
     <div className="mx-auto w-full py-8 font-sans">
@@ -77,14 +112,15 @@ export function Resume() {
           </button>
         </div>
         
-        <div className="w-full h-[600px] bg-gray-50">
-          <object
-            data={`${resumeDetails.downloadUrl}#toolbar=0&navpanes=0&scrollbar=0`}
-            type="application/pdf"
-            width="100%"
-            height="100%"
-            className="border-0"
-          >
+        <div className="w-full h-[600px] bg-gray-50 flex items-center justify-center overflow-auto">
+          {isLoading && !hasError && (
+            <div className="flex flex-col items-center gap-3">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              <p className="text-gray-600 text-sm">Loading PDF...</p>
+            </div>
+          )}
+
+          {hasError && (
             <div className="flex flex-col items-center justify-center h-full p-8 text-center">
               <File className="h-16 w-16 text-gray-400 mb-4" />
               <p className="text-gray-600 mb-4">
@@ -98,7 +134,27 @@ export function Resume() {
                 Download PDF Instead
               </button>
             </div>
-          </object>
+          )}
+
+          <Document
+            file={resumeDetails.downloadUrl}
+            onLoadSuccess={onDocumentLoadSuccess}
+            onLoadError={onDocumentLoadError}
+            loading={null}
+            error={null}
+            className={isLoading || hasError ? 'hidden' : 'flex flex-col items-center gap-4'}
+          >
+            {Array.from(new Array(numPages), (el, index) => (
+              <Page
+                key={`page_${index + 1}`}
+                pageNumber={index + 1}
+                width={600}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+                className="shadow-md"
+              />
+            ))}
+          </Document>
         </div>
       </motion.div>
     </div>
