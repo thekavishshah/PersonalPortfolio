@@ -3,7 +3,7 @@ import { Contact } from '../contact';
 import AvailabilityCard from '../AvailabilityCard';
 import { Presentation } from '../presentation';
 import AllProjects from '../projects/AllProjects';
-import Resume from '../resume';
+import { Resume } from '../resume';
 import Skills from '../skills';
 
 interface ToolRendererProps {

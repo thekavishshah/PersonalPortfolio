@@ -11,7 +11,7 @@ import { Presentation } from '@/components/presentation';
 import AllProjects from '@/components/projects/AllProjects';
 import Skills from '@/components/skills';
 import { Contact } from '@/components/contact';
-import Resume from '@/components/resume';
+import { Resume } from '@/components/resume';
 import AvailabilityCard from '@/components/AvailabilityCard';
 
 interface PresetReplyProps {

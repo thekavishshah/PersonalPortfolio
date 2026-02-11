@@ -7,7 +7,7 @@
     "email": "kshah77@asu.edu",
     "phone": "+1 408-609-7196",
     "handle": "@thekavishshah",
-    "bio": "Hey 👋\nI'm Kavish, a Computer Science Honors student at Arizona State University's Barrett Honors College with a 3.84 GPA. I specialize in building scalable full-stack applications and AI/ML systems. I've worked at FarmX Inc. developing AI-powered soil moisture prediction models with 96% accuracy, and at Dark Alpha Capital creating RAG chatbots that improved accuracy by 40%. I'm passionate about leveraging AI, machine learning, and full-stack development to solve real-world problems.",
+    "bio": "Hey 👋\nI'm Kavish, a Computer Science Honors student at Arizona State University's Barrett Honors College with a 3.88 GPA. I specialize in building scalable full-stack applications and AI/ML systems. I've worked at FarmX Inc. developing AI-powered soil moisture prediction models with 96% accuracy, and at Dark Alpha Capital creating RAG chatbots that improved accuracy by 40%. I'm passionate about leveraging AI, machine learning, and full-stack development to solve real-world problems.",
     "avatar": "/profile.jpg",
     "fallbackAvatar": "https://images.unsplash.com/photo-1610216705422-caa3fcb6d158?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3"
   },
@@ -16,7 +16,7 @@
       "degree": "Bachelor of Science Honors in Computer Science",
       "institution": "Arizona State University - Barrett, The Honors College",
       "duration": "2022-2026",
-      "cgpa": "3.84/4.00",
+      "cgpa": "3.88/4.00",
       "graduationDate": "May 2026"
     },
     "previous": {
@@ -27,7 +27,7 @@
       "completionDate": "2022"
     },
     "achievements": [
-      "Barrett Honors College Scholar with 3.84 GPA",
+      "Barrett Honors College Scholar with 3.88 GPA",
       "Fulton Ambassador representing engineering school",
       "Treasurer at SoDA (The Software Developer Association)",
       "Barrett Residential Peer Mentor mentoring 50+ students",
@@ -187,7 +187,7 @@
       "Reduced code review time by 30% with automated GitHub bot",
       "Mentored 50+ first-year engineering students as Barrett Peer Mentor",
       "Treasurer of SoDA (Software Developer Association) at ASU",
-      "Barrett Honors College Scholar with 3.84 GPA"
+      "Barrett Honors College Scholar with 3.88 GPA"
     ],
     "workingStyle": "I'm passionate about learning new technologies and tackling challenging problems with scalable, efficient solutions. I thrive in collaborative environments and love building systems that deliver measurable impact.",
     "motivation": "Building innovative technology that solves real-world problems through AI/ML, full-stack development, and data-driven solutions"
@@ -197,7 +197,7 @@
     "description": "Computer Science Honors Student | Software Engineer | AI/ML Developer | Arizona State University",
     "fileType": "PDF",
     "lastUpdated": "February 2026",
-    "fileSize": "215 KB",
+    "fileSize": "120 KB",
     "downloadUrl": "/resume.pdf"
   },
   "chatbot": {

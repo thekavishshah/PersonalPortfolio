@@ -1,52 +1,43 @@
 'use client';
 
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDownToLine, Download, Eye, File, ExternalLink } from 'lucide-react';
-import Image from 'next/image';
-import dynamic from 'next/dynamic';
+import { Download, File, ExternalLink } from 'lucide-react';
 import { resumeDetails } from '@/lib/config-loader';
+import { Document, Page, pdfjs } from 'react-pdf';
+import { useState, useEffect } from 'react';
 
-// Dynamically import PDF components (client-side only)
-const Document = dynamic(
-  () => import('react-pdf').then((mod) => mod.Document),
-  { ssr: false }
-);
-const Page = dynamic(
-  () => import('react-pdf').then((mod) => mod.Page),
-  { ssr: false }
-);
-
-// Configure PDF.js worker (client-side only)
+// Configure PDF.js worker - use exact version that react-pdf expects
 if (typeof window !== 'undefined') {
-  import('react-pdf/dist/Page/AnnotationLayer.css');
-  import('react-pdf/dist/Page/TextLayer.css');
-  import('react-pdf').then((pdfjs) => {
-    pdfjs.pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.pdfjs.version}/build/pdf.worker.min.mjs`;
-  });
+  pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@5.4.296/build/pdf.worker.min.mjs`;
 }
 
 export function Resume() {
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [hasError, setHasError] = useState<boolean>(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleDownload = () => {
     // For external URLs, open in a new tab
     window.open(resumeDetails.downloadUrl, '_blank');
   };
 
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
+    console.log('PDF loaded successfully! Pages:', numPages);
     setNumPages(numPages);
-    setIsLoading(false);
-    setHasError(false);
+    setLoading(false);
+    setError(null);
   }
 
-  function onDocumentLoadError(error: Error): void {
+  function onDocumentLoadError(error: Error) {
     console.error('Error loading PDF:', error);
-    setIsLoading(false);
-    setHasError(true);
+    setError(`Failed to load resume: ${error.message}`);
+    setLoading(false);
   }
 
   return (
@@ -112,49 +103,65 @@ export function Resume() {
           </button>
         </div>
         
-        <div className="w-full h-[600px] bg-gray-50 flex items-center justify-center overflow-auto">
-          {isLoading && !hasError && (
-            <div className="flex flex-col items-center gap-3">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-              <p className="text-gray-600 text-sm">Loading PDF...</p>
-            </div>
-          )}
+        <div className="w-full bg-gray-50 flex flex-col items-center justify-center overflow-auto p-4">
+          {/* Resume PDF Preview */}
+          <div className="w-full max-w-4xl">
+            {loading && (
+              <div className="flex items-center justify-center py-20">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              </div>
+            )}
 
-          {hasError && (
-            <div className="flex flex-col items-center justify-center h-full p-8 text-center">
-              <File className="h-16 w-16 text-gray-400 mb-4" />
-              <p className="text-gray-600 mb-4">
-                Unable to display PDF preview in your browser.
-              </p>
-              <button
-                onClick={handleDownload}
-                className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            {error && (
+              <div className="flex flex-col items-center justify-center p-8 text-center">
+                <File className="h-20 w-20 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-700 text-lg font-medium mb-2">
+                  Resume Preview Unavailable
+                </p>
+                <p className="text-gray-500 text-sm mb-6">
+                  {error}
+                </p>
+                <button
+                  onClick={handleDownload}
+                  className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md"
+                >
+                  <Download className="h-5 w-5" />
+                  Download PDF
+                </button>
+              </div>
+            )}
+
+            {!error && mounted && (
+              <Document
+                file="/resume.pdf"
+                onLoadSuccess={onDocumentLoadSuccess}
+                onLoadError={onDocumentLoadError}
+                loading={
+                  <div className="flex items-center justify-center py-20">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                  </div>
+                }
+                className="flex flex-col items-center"
               >
-                <Download className="h-5 w-5" />
-                Download PDF Instead
-              </button>
-            </div>
-          )}
+                {Array.from(new Array(numPages), (_, index) => (
+                  <Page
+                    key={`page_${index + 1}`}
+                    pageNumber={index + 1}
+                    width={Math.min(800, typeof window !== 'undefined' ? window.innerWidth - 100 : 800)}
+                    className="mb-4 shadow-lg"
+                    renderTextLayer={false}
+                    renderAnnotationLayer={false}
+                  />
+                ))}
+              </Document>
+            )}
 
-          <Document
-            file={resumeDetails.downloadUrl}
-            onLoadSuccess={onDocumentLoadSuccess}
-            onLoadError={onDocumentLoadError}
-            loading={null}
-            error={null}
-            className={isLoading || hasError ? 'hidden' : 'flex flex-col items-center gap-4'}
-          >
-            {Array.from(new Array(numPages), (el, index) => (
-              <Page
-                key={`page_${index + 1}`}
-                pageNumber={index + 1}
-                width={600}
-                renderTextLayer={false}
-                renderAnnotationLayer={false}
-                className="shadow-md"
-              />
-            ))}
-          </Document>
+            {!error && !mounted && (
+              <div className="flex items-center justify-center py-20">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              </div>
+            )}
+          </div>
         </div>
       </motion.div>
     </div>
