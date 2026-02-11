@@ -3,17 +3,29 @@
 import { motion } from 'framer-motion';
 import { Download, File, ExternalLink } from 'lucide-react';
 import { resumeDetails } from '@/lib/config-loader';
-import { Document, Page, pdfjs } from 'react-pdf';
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 
-// Configure PDF.js worker - use exact version that react-pdf expects
+// Dynamically import react-pdf to avoid SSR issues
+const Document = dynamic(
+  () => import('react-pdf').then((mod) => mod.Document),
+  { ssr: false }
+);
+
+const Page = dynamic(
+  () => import('react-pdf').then((mod) => mod.Page),
+  { ssr: false }
+);
+
+// Configure PDF.js worker only on client side
 if (typeof window !== 'undefined') {
-  pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@5.4.296/build/pdf.worker.min.mjs`;
+  import('react-pdf').then((mod) => {
+    mod.pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@5.4.296/build/pdf.worker.min.mjs`;
+  });
 }
 
 export function Resume() {
   const [numPages, setNumPages] = useState<number>(0);
-  const [pageNumber, setPageNumber] = useState<number>(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
