@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Award, Code, GraduationCap, Mail, MessageSquare, Briefcase } from 'lucide-react';
+import { Award, Code, GraduationCap, Mail, MessageSquare, Briefcase, FileText } from 'lucide-react';
 import React from 'react';
 
 import { presetReplies } from '@/lib/config-loader';
@@ -26,6 +26,10 @@ const ChatLanding: React.FC<ChatLandingProps> = ({ submitQuery, handlePresetRepl
     {
       icon: <Award className="h-4 w-4" />,
       text: 'What are your skills?',
+    },
+    {
+      icon: <FileText className="h-4 w-4" />,
+      text: 'Can I see your resume?',
     },
     {
       icon: <Briefcase className="h-4 w-4" />,
