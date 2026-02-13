@@ -153,7 +153,7 @@ const Chat = () => {
     },
   });
 
-  const { currentAIMessage, latestUserMessage, hasActiveTool } = useMemo(() => {
+  const { currentAIMessage, latestUserMessage, hasActiveTool, conversationPairs } = useMemo(() => {
     const latestAIMessageIndex = messages.findLastIndex(
       (m) => m.role === 'assistant'
     );
@@ -167,6 +167,7 @@ const Chat = () => {
       latestUserMessage:
         latestUserMessageIndex !== -1 ? messages[latestUserMessageIndex] : null,
       hasActiveTool: false,
+      conversationPairs: [] as Array<{ user: any; assistant: any | null }>,
     };
 
     if (result.currentAIMessage) {
@@ -178,9 +179,17 @@ const Chat = () => {
         ) || false;
     }
 
-    if (latestAIMessageIndex < latestUserMessageIndex) {
-      result.currentAIMessage = null;
+    // Build conversation pairs from all messages
+    const pairs: Array<{ user: any; assistant: any | null }> = [];
+    for (let i = 0; i < messages.length; i++) {
+      if (messages[i].role === 'user') {
+        const userMsg = messages[i];
+        const assistantMsg = messages[i + 1]?.role === 'assistant' ? messages[i + 1] : null;
+        pairs.push({ user: userMsg, assistant: assistantMsg });
+        if (assistantMsg) i++; // Skip the assistant message in the next iteration
+      }
     }
+    result.conversationPairs = pairs;
 
     return result;
   }, [messages]);
@@ -287,27 +296,8 @@ const Chat = () => {
                 <Avatar hasActiveTool={hasActiveTool} />
               </ClientOnly>
             </div>
-
-            <AnimatePresence>
-              {latestUserMessage && !currentAIMessage && (
-                <motion.div
-                  {...MOTION_CONFIG}
-                  className="mx-auto flex max-w-3xl px-4"
-                >
-                  <ChatBubble variant="sent">
-                    <ChatBubbleMessage>
-                      <ChatMessageContent
-                        message={latestUserMessage}
-                        isLast={true}
-                        isLoading={false}
-                        reload={() => Promise.resolve(null)}
-                      />
-                    </ChatBubbleMessage>
-                  </ChatBubble>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
+
           <AnimatePresence mode="wait">
             {isEmptyState ? (
               <motion.div
@@ -315,8 +305,8 @@ const Chat = () => {
                 className="flex min-h-full items-center justify-center"
                 {...MOTION_CONFIG}
               >
-                <ChatLanding 
-                  submitQuery={submitQuery} 
+                <ChatLanding
+                  submitQuery={submitQuery}
                   handlePresetReply={handlePresetReply}
                 />
               </motion.div>
@@ -352,13 +342,13 @@ const Chat = () => {
                           </p>
                         </div>
                       </div>
-                      
+
                       <div className="text-sm text-amber-800 dark:text-amber-200 space-y-2">
                         <p>
-                          Hi! I'm currently using the <strong>free version</strong> of Google's Gemini API, 
+                          Hi! I'm currently using the <strong>free version</strong> of Google's Gemini API,
                           and today's quota has been reached.
                         </p>
-                        
+
                         <div className="bg-amber-100 dark:bg-amber-900/30 p-3 rounded-lg mt-3">
                           <p className="font-medium mb-2">What you can do:</p>
                           <ul className="list-disc list-inside space-y-1 text-xs">
@@ -368,17 +358,17 @@ const Chat = () => {
                           </ul>
                         </div>
                       </div>
-                      
+
                       <div className="flex gap-2 mt-4">
                         <button
                           onClick={() => {
                             setErrorMessage(null);
                             const preset = presetReplies["How can I reach you?"];
                             if (preset) {
-                              setPresetReply({ 
-                                question: "How can I reach you?", 
-                                reply: preset.reply, 
-                                tool: preset.tool 
+                              setPresetReply({
+                                question: "How can I reach you?",
+                                reply: preset.reply,
+                                tool: preset.tool
                               });
                             }
                           }}
@@ -396,7 +386,7 @@ const Chat = () => {
                           Use Presets
                         </button>
                       </div>
-                      
+
                       <p className="text-xs text-amber-600 dark:text-amber-400 text-center mt-3">
                         Thank you for your patience! 🙏
                       </p>
@@ -404,27 +394,53 @@ const Chat = () => {
                   </ChatBubbleMessage>
                 </ChatBubble>
               </motion.div>
-            ) : currentAIMessage ? (
-              <div className="pb-4">
-                <SimplifiedChatView
-                  message={currentAIMessage}
-                  isLoading={isLoading}
-                  reload={reload}
-                  addToolResult={addToolResult}
-                />
-              </div>
             ) : (
-              loadingSubmit && (
-                <motion.div
-                  key="loading"
-                  {...MOTION_CONFIG}
-                  className="px-4 pt-18"
-                >
-                  <ChatBubble variant="received">
-                    <ChatBubbleMessage isLoading />
-                  </ChatBubble>
-                </motion.div>
-              )
+              <div className="space-y-4 pb-4">
+                {/* Render all conversation pairs */}
+                {conversationPairs.map((pair, index) => (
+                  <div key={pair.user.id} className="space-y-4">
+                    {/* User Message */}
+                    <motion.div
+                      {...MOTION_CONFIG}
+                      className="mx-auto flex max-w-3xl px-4"
+                    >
+                      <ChatBubble variant="sent">
+                        <ChatBubbleMessage>
+                          <ChatMessageContent
+                            message={pair.user}
+                            isLast={true}
+                            isLoading={false}
+                            reload={() => Promise.resolve(null)}
+                          />
+                        </ChatBubbleMessage>
+                      </ChatBubble>
+                    </motion.div>
+
+                    {/* Assistant Message or Loading */}
+                    {pair.assistant ? (
+                      <div className="px-4">
+                        <SimplifiedChatView
+                          message={pair.assistant}
+                          isLoading={isLoading && index === conversationPairs.length - 1}
+                          reload={reload}
+                          addToolResult={addToolResult}
+                        />
+                      </div>
+                    ) : (
+                      loadingSubmit && (
+                        <motion.div
+                          {...MOTION_CONFIG}
+                          className="px-4"
+                        >
+                          <ChatBubble variant="received">
+                            <ChatBubbleMessage isLoading />
+                          </ChatBubble>
+                        </motion.div>
+                      )
+                    )}
+                  </div>
+                ))}
+              </div>
             )}
           </AnimatePresence>
         </div>
