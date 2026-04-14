@@ -7,7 +7,7 @@
     "email": "kshah77@asu.edu",
     "phone": "+1 408-609-7196",
     "handle": "@thekavishshah",
-    "bio": "Hey 👋\nI'm Kavish, a Computer Science Honors student at Arizona State University's Barrett Honors College with a 3.88 GPA. I specialize in building scalable full-stack applications and AI/ML systems. I've worked at FarmX Inc. developing AI-powered soil moisture prediction models with 96% accuracy, and at Dark Alpha Capital creating RAG chatbots that improved accuracy by 40%. I'm passionate about leveraging AI, machine learning, and full-stack development to solve real-world problems.",
+    "bio": "I am a fourth-year Honors CS student at Arizona State University (3.88 GPA) graduating May 2026, with two software engineering internships and a habit of building things that actually ship.\n\nAt FarmX, I built ML pipelines using Random Forest and Gradient Boosting that achieved 96% accuracy in soil moisture prediction. At Dark Alpha Capital, I shipped a RAG-powered chatbot with persistent memory that cut internal deal tracking time by 30%, alongside full-stack applications built on Next.js, PostgreSQL, and Redis.\n\nOn the side, I am co-building Stiled, which is an AI virtual try-on Chrome extension with 85–92% fit accuracy using MediaPipe and Gemini, now at 100+ beta signups. I also built GreenStream, a Claude-powered sustainability platform with D3.js carbon visualizations and AI-driven utility bill parsing.\n\nMy stack: TypeScript, Python, React, Next.js, Node.js, FastAPI, PostgreSQL, and growing depth in LLMs, RAG, and computer vision.\n\nActively looking for full-time SWE roles for 2026 — reach me at kshah77@asu.edu.",
     "avatar": "/profile.jpg",
     "fallbackAvatar": "https://images.unsplash.com/photo-1610216705422-caa3fcb6d158?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3"
   },
@@ -36,20 +36,32 @@
   },
   "experience": [
     {
+      "company": "Green On Demand Strategies Inc.",
+      "position": "Software Engineer Intern",
+      "type": "Internship",
+      "duration": "August 2025 – Present",
+      "location": "Tempe, Arizona, United States",
+      "workType": "Hybrid",
+      "description": "Engineered distributed vector search infrastructure with HNSW indexing and cosine similarity algorithms, optimizing retrieval latency to sub-100ms and scaling to 10,000+ embeddings with 99.9% uptime. Built AI-powered document extraction system using Claude API and NLP pipelines, implementing Redis caching layer that cut processing time by 75%. Architected automated weekly digest system using Resend API and cron scheduling, implementing AI-driven content summaries and personalized email generation for user sustainability insights.",
+      "technologies": ["Google Gemini API", "TypeScript", "React", "Next.js", "Supabase", "PostgreSQL", "Redis", "Claude API", "NLP", "Vector Search", "HNSW", "Resend API"]
+    },
+    {
       "company": "FarmX Inc.",
       "position": "Software Engineer Intern",
       "type": "Internship",
       "duration": "May 2025 – August 2025",
-      "description": "Achieved 96% predictive accuracy in soil moisture estimation through developing an AI-powered pipeline leveraging Random Forest and Gradient Boosting, improving irrigation efficiency across diverse soil types. Reduced irrigation error variance by 40% by implementing soil-texture-specific calibration models. Accomplished competitive accuracy within 5% of ensemble models by implementing Linear Regression, reducing training complexity and computation time by 60%.",
-      "technologies": ["Python", "Machine Learning", "Random Forest", "Gradient Boosting", "Linear Regression", "AI Pipeline Development", "Data Science"]
+      "location": "San Jose, California",
+      "description": "Implemented an AI-powered pipeline leveraging Random Forest and Gradient Boosting that achieved 96% predictive accuracy in soil moisture estimation, improving irrigation efficiency across diverse soil types. Reduced irrigation error variance by 40% by implementing soil-texture-specific calibration models and integrating Osmo's 143× larger sensing volume, resulting in more accurate root-zone water availability insights. Accomplished competitive accuracy within 5% of ensemble models by implementing Linear Regression, which decreased training complexity and computation time by 60%, informing cost-efficient deployment decisions.",
+      "technologies": ["Python", "Machine Learning", "Random Forest", "Gradient Boosting", "Linear Regression", "AI Pipeline Development", "Data Science", "Statistical Modeling"]
     },
     {
       "company": "Dark Alpha Capital LLC",
       "position": "Software Engineer Intern",
       "type": "Internship",
       "duration": "January 2025 – May 2025",
-      "description": "Developed and deployed scalable full-stack web applications using Next.js, Prisma, and PostgreSQL, reducing manual deal tracking efforts by 25%. Deployed a RAG chatbot implementing persistent long-term memory, reducing internal deal tracking time by 30% and improving multi-turn accuracy by 40%. Resolved critical memory persistence issues in multi-session AI workflows, increasing chatbot context retention by 80% and reducing duplicate query errors by over 50%.",
-      "technologies": ["Next.js", "Prisma", "PostgreSQL", "RAG", "OpenAI API", "Vector Databases", "TypeScript", "Full-Stack Development"]
+      "location": "Tempe, Arizona",
+      "description": "Deployed scalable full-stack web applications using Next.js, PostgreSQL, and Redis; configured GitHub Actions CI/CD and Playwright end-to-end tests, reducing deal tracking efforts by 25%. Deployed a RAG chatbot implementing persistent long-term memory and resolving vector store/state management issues to reduce internal deal tracking time by 30% and improve multi-turn accuracy by 40%. Resolved critical memory persistence issues in multi-session AI workflows, increasing chatbot context retention by 80% and reducing duplicate query errors by over 50%.",
+      "technologies": ["Next.js", "PostgreSQL", "Redis", "GitHub Actions", "Playwright", "RAG", "OpenAI API", "Vector Databases", "TypeScript", "Full-Stack Development", "CI/CD"]
     },
     {
       "company": "Ira A. Fulton Schools of Engineering",
@@ -61,11 +73,11 @@
     }
   ],
   "skills": {
-    "programming": ["JavaScript", "TypeScript", "Python", "Java", "JavaFX", "C", "C++", "R", "HTML", "CSS", "MATLAB"],
-    "ml_ai": ["Machine Learning", "Random Forest", "Gradient Boosting", "Linear Regression", "OpenAI API", "Anthropic Claude API", "RAG Systems", "Vector Databases", "AI Pipeline Development"],
+    "programming": ["JavaScript", "TypeScript", "Python", "Java", "JavaFX", "C", "C++", "R", "HTML", "CSS", "Swift", "MATLAB"],
+    "ml_ai": ["Machine Learning", "Random Forest", "Gradient Boosting", "Linear Regression", "OpenAI API", "Google Gemini API", "Anthropic Claude API", "RAG Systems", "Vector Databases", "NLP", "MediaPipe", "OpenCV", "AI Pipeline Development"],
     "web_development": ["React.js", "Next.js", "Node.js", "Express", "Flask", "Django Rest Framework", "FastAPI", "Prisma", "RESTful APIs"],
-    "databases": ["PostgreSQL", "MySQL", "MongoDB", "Upstash Redis", "Firebase"],
-    "devops_cloud": ["Docker", "Git", "GitHub Actions", "CI/CD Pipeline", "Agile/Scrum", "JIRA", "Salesforce"],
+    "databases": ["PostgreSQL", "MySQL", "MongoDB", "Upstash Redis", "Firebase", "Supabase"],
+    "devops_cloud": ["Docker", "Git", "GitHub Actions", "CI/CD Pipeline", "Playwright", "Agile/Scrum", "JIRA", "Salesforce", "Ubuntu"],
     "iot_hardware": [],
     "soft_skills": ["Problem Solving", "Team Leadership", "Project Management", "Communication", "Mentorship", "Research", "Technical Writing"]
   },
@@ -78,6 +90,38 @@
   ],
   "projects": [
     {
+      "title": "Stiled",
+      "category": "AI/Chrome Extension",
+      "description": "Created a Chrome extension with Node.js/Express and Google Gemini for AI virtual try-on, achieving 85-92% fit accuracy and 90-95% skin tone detection accuracy using MediaPipe/K-Means clustering. Launched beta with 100+ waitlist signups, implementing a 5-indicator color matching engine.",
+      "techStack": ["Node.js", "Express", "Flask", "Google Gemini API", "MediaPipe", "OpenCV", "K-Means Clustering", "Chrome Extensions"],
+      "date": "January 2026 – Present",
+      "status": "In Progress",
+      "featured": true,
+      "links": [
+        {
+          "name": "Website",
+          "url": "https://thestiled.com"
+        }
+      ],
+      "images": []
+    },
+    {
+      "title": "Resume Copilot",
+      "category": "AI/Automation Tool",
+      "description": "Built FastAPI backend with Gemini AI integration and regex-based LaTeX parsing, implementing 3-tier validation pipeline that lowered resume customization time by 85% through automated bullet point rewriting. Architected RESTful API with Pydantic data models and retry logic, processing LaTeX compilation workflows that dynamically inject AI-generated content and apply formatting to 20+ technical terms.",
+      "techStack": ["Python", "FastAPI", "Google Gemini API", "LaTeX", "Regex", "Pydantic", "RESTful API"],
+      "date": "January 2026 – Present",
+      "status": "In Progress",
+      "featured": true,
+      "links": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/thekavishshah/ResumeCopilot"
+        }
+      ],
+      "images": []
+    },
+    {
       "title": "GreenStream AI",
       "category": "AI/Full-Stack Web Application",
       "description": "Developed an AI-powered chatbot using FastAPI and Anthropic Claude models to deliver industry-specific analyses and citations from public data, reducing user research time by 50%. Implemented real-time query handling and dynamic data visualization in React/Next.js, improving response latency by 35% and enhancing user engagement by 30%.",
@@ -87,8 +131,8 @@
       "featured": true,
       "links": [
         {
-          "name": "GitHub",
-          "url": "https://github.com/thekavishshah"
+          "name": "Website",
+          "url": "https://www.greenondemand.ai/"
         }
       ],
       "images": []
@@ -104,7 +148,7 @@
       "links": [
         {
           "name": "GitHub",
-          "url": "https://github.com/thekavishshah"
+          "url": "https://github.com/thekavishshah/code-sentinel-bot"
         }
       ],
       "images": []
@@ -120,7 +164,7 @@
       "links": [
         {
           "name": "GitHub",
-          "url": "https://github.com/thekavishshah"
+          "url": "https://github.com/thekavishshah/dark-alpha-chatbot"
         }
       ],
       "images": []
@@ -136,7 +180,7 @@
       "links": [
         {
           "name": "GitHub",
-          "url": "https://github.com/thekavishshah"
+          "url": "https://github.com/thekavishshah/Soil-Prediction"
         }
       ],
       "images": []
@@ -196,8 +240,8 @@
     "title": "Kavish Shah - Resume",
     "description": "Computer Science Honors Student | Software Engineer | AI/ML Developer | Arizona State University",
     "fileType": "PDF",
-    "lastUpdated": "February 2026",
-    "fileSize": "120 KB",
+    "lastUpdated": "April 2026",
+    "fileSize": "121 KB",
     "downloadUrl": "/resume.pdf"
   },
   "chatbot": {

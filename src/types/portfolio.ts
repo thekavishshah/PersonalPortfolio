@@ -26,6 +26,8 @@ export interface Experience {
   position: string;
   type: string;
   duration: string;
+  location?: string;
+  workType?: string;
   description: string;
   technologies: string[];
 }

@@ -1,12 +1,12 @@
 'use client';
 
 import { Suspense } from 'react';
-import Chat from '@/components/chat/chat';
+import LandingPage from '@/components/landing-page';
 
 export default function Home() {
   return (
-    <Suspense fallback={<div>Loading chat...</div>}>
-      <Chat />
+    <Suspense fallback={<div className="flex h-screen items-center justify-center">Loading...</div>}>
+      <LandingPage />
     </Suspense>
   );
 }
